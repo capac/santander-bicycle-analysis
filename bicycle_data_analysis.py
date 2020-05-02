@@ -12,7 +12,8 @@ data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 # connect to SQLite DB on laptop
 flow_journey_db = data_dir / 'FlowJourneyData.db'
 con = sqlite3.connect(flow_journey_db)
-cursor = con.execute('''SELECT * FROM journeys''')
+cursor = con.execute('''SELECT Bike_Id, End_Date, Start_Date FROM journeys''')
+
 journey_results = cursor.fetchall()
 bike_df = pd.DataFrame(journey_results, columns = [x[0] for x in cursor.description])
 for col in ['End_Date', 'Start_Date']:
@@ -22,6 +23,8 @@ max_min_days = bike_df['End_Date'].max() - bike_df['Start_Date'].min()
 total_duration = max_min_days.total_seconds()/(24*3600)
 
 grouped_bikes_journeys_per_day = bike_df.groupby('Bike_Id')['Bike_Id'].count()/(total_duration)
+
+# print(grouped_bikes_journeys_per_day.head(20))
 
 fig, axes = plt.subplots(figsize=(8, 6))
 axes.hist(grouped_bikes_journeys_per_day, 30, alpha=0.8, edgecolor='k', color='firebrick')
