@@ -37,7 +37,7 @@ bike_df['Journeys_Time'] = bike_df['Tot_Time'].divide(bike_df['Num_Journeys'])/6
 # print(gtr_df.sort_values(ascending=False))
 
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.hist(bike_df['Journeys_Time'], 60, alpha=0.8, range=[0, 60], edgecolor='k', color='red')
+axes.hist(bike_df['Journeys_Time'], 60, alpha=0.8, edgecolor='k', color='red')
 axes.set_xlabel('Duration per bike')
 plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
