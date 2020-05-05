@@ -12,32 +12,17 @@ data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 # connect to SQLite DB on laptop
 flow_journey_db = data_dir / 'FlowJourneyData.db'
 con = sqlite3.connect(flow_journey_db)
-cursor = con.execute('''SELECT Bike_Id, COUNT(Rental_Id) AS Num_Journeys, SUM(Duration) AS Tot_Time FROM journeys GROUP BY Bike_Id HAVING Tot_Time > 1200''')
+# query = '''SELECT Bike_Id, Tot_Time, COUNT(Num_Journeys) AS Count_Journeys, ROUND(1.0*Tot_Time/COUNT(Num_Journeys), 2) AS Average FROM (SELECT strftime("%Y-%m-%d", End_Date) AS Day, Bike_Id, COUNT(Rental_Id) AS Num_Journeys, SUM(Duration) AS Tot_TimeFROM Journeys GROUP BY Day, Bike_Id HAVING Tot_Time > 0) GROUP BY Bike_Id'''
+query = '''SELECT * FROM MeanTime'''
+cursor = con.execute(query)
 
 journey_results = cursor.fetchall()
 bike_df = pd.DataFrame(journey_results, columns = [x[0] for x in cursor.description])
-# for col in ['End_Date', 'Start_Date']:
-#     bike_df[col] = pd.to_datetime(bike_df[col], format=r'%Y-%m-%d %H:%M:%S%f', errors='raise', exact=False)
 
-# print(bike_df.head(10))
-# print(bike_df.sort_values(by='count', ascending=False)[:10])
-# print(bike_df.isna().any())
-
-# max_min_days = bike_df['End_Date'].max() - bike_df['Start_Date'].min()
-# total_duration = max_min_days.total_seconds()/(24*3600)
-
-# grouped_bikes_and_journeys = bike_df['Rental_Id'].groupby(bike_df['Bike_Id'])
-# grouped_journeys_per_bikes_per_day = grouped_bikes_and_journeys.count()/total_duration
-
-bike_df['Journeys_Time'] = bike_df['Tot_Time'].divide(bike_df['Num_Journeys'])/60
-
-# print(np.argwhere(np.isnan(bike_df['Num_Journeys'].values)))
-
-# gtr_df = grouped_journeys_per_bikes_per_day.loc[grouped_journeys_per_bikes_per_day >= 0.5]
-# print(gtr_df.sort_values(ascending=False))
-
+# histogram
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.hist(bike_df['Journeys_Time'], 60, alpha=0.8, edgecolor='k', color='red')
+axes.hist(bike_df['Average'], 80, range=[0, 30], alpha=0.8, edgecolor='k', color='red')
+axes.vlines(bike_df['Average'].mean(), axes.yaxis.get_data_interval()[0], axes.yaxis.get_data_interval()[1], linestyles=':')
 axes.set_xlabel('Duration per bike')
 plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
