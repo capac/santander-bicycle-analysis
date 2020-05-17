@@ -36,9 +36,10 @@ fig, axes = plt.subplots(figsize=(8, 6))
 axes.scatter(days, rides, alpha=0.6, marker='o',
              color='cornflowerblue', edgecolor='k')
 
-# London tube strikes
+# London tube strikes, in tuples with years, months and days
 for dt in [(2012, 12, 26), (2014, 2, 4), (2014, 2, 5), (2014, 2, 6), (2014, 4, 28), (2014, 4, 29), (2014, 4, 30), (2014, 8, 22), (2014, 8, 23), (2014, 12, 1), (2015, 7, 8), (2015, 7, 9), (2015, 8, 5), (2015, 8, 6)]:
-    axes.vlines(datetime(*dt), axes.yaxis.get_data_interval()[0], axes.yaxis.get_data_interval()[-1], linestyle=':', label='Tube strike')
+    axes.vlines(datetime(*dt), axes.yaxis.get_data_interval()
+                [0], axes.yaxis.get_data_interval()[-1], linestyle=':', label='Tube strike')
 
 # format the ticks
 months = mdates.MonthLocator()  # every month
