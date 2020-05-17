@@ -23,9 +23,11 @@ bike_df = pd.DataFrame(journey_results, columns = [x[0] for x in cursor.descript
 
 # histogram
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.hist(bike_df['Average'], 60, range=[2, 6], alpha=0.8, edgecolor='k', color='red')
+axes.hist(bike_df['Average'], 60, range=[2, 6], alpha=0.8, edgecolor='k', color='cornflowerblue')
 axes.vlines(bike_df['Average'].mean(), axes.yaxis.get_data_interval()[0], axes.yaxis.get_data_interval()[1], linestyles=':')
-axes.set_xlabel('Number of journeys per bike per day')
+axes.set_xlabel('Average number of journeys per bike per day')
+axes.set_ylabel('Counts')
+axes.set_title('Histogram of average number of journeys per bike per day')
 plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 fig.tight_layout()
