@@ -12,8 +12,8 @@ data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 # connect to SQLite DB on laptop
 flow_journey_db = data_dir / 'FlowJourneyData.db'
 con = sqlite3.connect(flow_journey_db)
-# query = '''SELECT Bike_Id, SUM(Num_Journeys) AS Sum_Journeys, COUNT(Num_Journeys) AS Count_Journeys, ROUND(1.0*SUM(Num_Journeys)/COUNT(Num_Journeys), 2) AS Average FROM (SELECT strftime("%Y-%m-%d", End_Date) AS Day, Bike_Id, COUNT(Rental_Id) AS Num_Journeys, SUM(Duration) AS Tot_Time FROM journeys GROUP BY Day, Bike_Id HAVING Tot_Time > 0) GROUP BY Bike_Id'''
-query = '''SELECT Bike_Id, Sum_Journeys, Count_Journeys, Average FROM JourneysBikeDay'''
+query = '''SELECT Bike_Id, SUM(Num_Rides) AS Tot_Num_Rides, COUNT(DISTINCT(Day)) AS Count_Journeys, ROUND(1.0*SUM(Num_Rides)/COUNT(DISTINCT(Day)), 2) AS Average FROM (SELECT strftime("%Y-%m-%d", End_Date) AS Day, Bike_Id, COUNT(Rental_Id) AS Num_Rides, SUM(Duration) AS Tot_Time FROM Journeys GROUP BY Day, Bike_Id HAVING Tot_Time > 0) GROUP BY Bike_Id'''
+# query = '''SELECT Bike_Id, Tot_Num_Rides, Count_Journeys, Average FROM JourneysBikeDay'''
 cursor = con.execute(query)
 journey_results = cursor.fetchall()
 
