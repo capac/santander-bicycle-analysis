@@ -19,7 +19,7 @@ fig, ax = plt.subplots(figsize=(8, 6))
 ax.bar(results_df['Hour'], results_df['Avg_Rides'],
        color='cornflowerblue', edgecolor='k', alpha=0.8)
 ax.set_xlabel('Hour')
-ax.set_ylabel('Average number of rides per bike')
+ax.set_ylabel('Average number of rides')
 ax.set_title('Average number of rides per hour on weekdays')
 ax.grid(linestyle=':')
 fig.tight_layout()
