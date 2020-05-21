@@ -8,11 +8,7 @@ import sqlite3
 home = os.environ['HOME']
 data_dir = Path(home) / r'Programming/data/s2ds-project-data'
 con = sqlite3.connect(data_dir / 'FlowJourneyData.db')
-query = ''' SELECT strftime("%H", End_Date) AS Hour, 
-                   COUNT(Rental_Id) AS Num_Rides
-              FROM Journeys 
-             WHERE strftime("%w", End_Date) NOT IN ("0", "6") 
-          GROUP BY Hour'''
+query = ''' SELECT strftime("%H", End_Date) AS Hour, COUNT(Rental_Id) AS Num_Rides FROM Journeys WHERE strftime("%w", End_Date) NOT IN ("0", "6") GROUP BY Hour'''
 cur = con.execute(query)
 query_results = cur.fetchall()
 results_df = pd.DataFrame(query_results, columns=[
