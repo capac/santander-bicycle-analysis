@@ -24,7 +24,7 @@ for i, bike_file in enumerate(bike_files):
         if sorted(reader[0]) != sorted(columns_list):
             print(f'Check: {bike_file}')
 
-# Convert datetimes to custon format in each dataframe
+# Convert datetimes to custom format in each dataframe
 tmp_df_list=[]
 for i, bike_file in enumerate(bike_files):
     tmp_df=pd.read_csv(bike_file, encoding='ISO-8859-1', low_memory=False)
@@ -34,7 +34,7 @@ for i, bike_file in enumerate(bike_files):
     tmp_df_list.append(tmp_df)
     if i % 10 == 0:
         print(f'Number of CSV files processed: {i}')
-print(f'Total number of CSV files: {i}')
+    print(f'Total number of CSV files: {i}')
 
 # Concatenate dataframes
 journeys_df=pd.concat(tmp_df_list, axis=0, ignore_index=True)
@@ -71,6 +71,6 @@ for col in columns_list:
     print(f'Columns: {col}, dtype: {journeys_df[col].dtypes}')
 
 # Save file to CSV
-print(f'Saving to SQL')
+print(f'Saving to CSV')
 journeys_df.to_sql('journeys.csv')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
