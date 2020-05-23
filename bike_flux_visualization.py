@@ -15,7 +15,7 @@ output_file("tile.html")
 tile_provider = get_provider('OSM')
 
 # range bounds supplied in web mercator coordinates
-p = figure(x_range=(-89055.59, 40075.02), y_range=(6667414.22, 6749655.34), x_axis_type="mercator", y_axis_type="mercator", width=1000, height=800)
+p = figure(x_range=(-80150.03, 48980.58), y_range=(6667414.22, 6749655.34), x_axis_type="mercator", y_axis_type="mercator", width=1000, height=800)
 p.add_tile(tile_provider)
 
 show(p)
