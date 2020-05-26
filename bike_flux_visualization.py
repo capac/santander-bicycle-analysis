@@ -1,11 +1,15 @@
 from pathlib import Path
 from itertools import islice
+import warnings
 import os
 import pandas as pd
 from bokeh.plotting import figure, output_file, show
 # from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.tile_providers import get_provider
 from pyproj import Proj, transform
+
+# ignore FutureWarning messages
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # load data
 home = os.environ['HOME']
@@ -46,7 +50,7 @@ for row in avg_weekdays_sum_diff_df.itertuples():
         map(tuple, zip(*station_chunk(row[1:21], 4))))
     time_of_day_df.append(
         {row[0]: {'sum': sum_flux, 'diff': diff_flux,
-         'lat': lat, 'long': long}})
+                  'lat': lat, 'long': long}})
 
 
 # print(time_of_day_df[0])
