@@ -3,6 +3,7 @@ from itertools import islice
 import warnings
 import os
 import re
+import numpy as np
 import pandas as pd
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, HoverTool
@@ -80,7 +81,8 @@ def station_chunk(it, size):
 bike_flux_list = []
 for row in avg_weekdays_sum_diff_df.itertuples():
     sum_flux, diff_flux, lat, long = list(
-        map(tuple, zip(*station_chunk(row[1:61], 4))))
+        map(tuple, zip(*station_chunk(row[1:], 4))))
+    sum_flux = list(np.array(sum_flux)/3e1)
     bike_flux_list.append(
         {row[0]: {'sum_flux': sum_flux, 'diff': diff_flux,
                   'lat': lat, 'long': long}})
