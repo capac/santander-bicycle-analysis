@@ -5,7 +5,7 @@ import os
 import re
 import pandas as pd
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import HoverTool
+from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.tile_providers import get_provider
 from pyproj import Proj, transform
 
@@ -42,15 +42,19 @@ station_id_list = [re.search(r'(?<=Latitude_)\d{1,3}', file).group(
 lat_long_df = avg_weekdays_sum_diff_df.filter(
     regex=r'^Latitude|^Longitude', axis=1)
 
-station_id_index_list = [i for i, item in enumerate(avg_weekdays_sum_diff_df.columns.to_list()) if re.search(r'^Latitude', item)]
+station_id_index_list = [i for i, item in enumerate(
+    avg_weekdays_sum_diff_df.columns.to_list()) if re.search(r'^Latitude', item)]
 
 for station_id_index, station_id in zip(station_id_index_list, station_id_list):
     selection_df = lat_long_df.filter(regex=rf'_{station_id}$', axis=1)
     mercLong, mercLat = toWebMerc(
         selection_df.iloc[0, 1], selection_df.iloc[0, 0])
-    avg_weekdays_sum_diff_df.insert(station_id_index, column='Merc_Lat_' + station_id, value = [mercLat for x in range(selection_df.shape[0])])
-    avg_weekdays_sum_diff_df.insert(station_id_index+1, column='Merc_Long_' + station_id, value = [mercLong for x in range(selection_df.shape[0])])
-    avg_weekdays_sum_diff_df.drop(['Latitude_'+station_id, 'Longitude_'+station_id], axis=1, inplace=True)
+    avg_weekdays_sum_diff_df.insert(station_id_index, column='Merc_Lat_' +
+                                    station_id, value=[mercLat for x in range(selection_df.shape[0])])
+    avg_weekdays_sum_diff_df.insert(station_id_index+1, column='Merc_Long_' +
+                                    station_id, value=[mercLong for x in range(selection_df.shape[0])])
+    avg_weekdays_sum_diff_df.drop(
+        ['Latitude_'+station_id, 'Longitude_'+station_id], axis=1, inplace=True)
 
 
 # London GPS coordinate range
@@ -78,25 +82,20 @@ for row in avg_weekdays_sum_diff_df.itertuples():
     sum_flux, diff_flux, lat, long = list(
         map(tuple, zip(*station_chunk(row[1:61], 4))))
     bike_flux_list.append(
-        {row[0]: {'sum': sum_flux, 'diff': diff_flux,
+        {row[0]: {'sum_flux': sum_flux, 'diff': diff_flux,
                   'lat': lat, 'long': long}})
 
 
-# print(bike_flux_list[32])
 time_interval_list = [
     time for interval_data in bike_flux_list for time in interval_data.keys()]
-# print(time_interval_list)
 
 for i, time in enumerate(time_interval_list):
-    coord_list_length = len(bike_flux_list[i][time]['lat'])
-    for j in range(coord_list_length):
-        long, lat = toWebMerc(bike_flux_list[i][time]['long'][j],
-                              bike_flux_list[i][time]['lat'][j])
-        p.circle(x=[long], y=[lat], size=bike_flux_list[i][time]
-                 ['sum'][j]/3e1, fill_color='royalblue', fill_alpha=0.5)
-    # flux_col = ColumnDataSource(bike_flux_list[i][time])
-    tooltips = [('Total traffic', '''@{bike_flux_list[i][time]['sum']}''')]
+    # print(bike_flux_list[i][time])
+    # print(type(bike_flux_list[i][time]))
+    flux_source = ColumnDataSource(data=bike_flux_list[i][time])
+    p.circle(x='long', y='lat', size='sum_flux', fill_color='royalblue', fill_alpha=0.5, source=flux_source)
+    tooltips = [('Total traffic', '@sum_flux')]
     break
 
 p.add_tools(HoverTool(tooltips=tooltips))
-# show(p)
+show(p)
