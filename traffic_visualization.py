@@ -12,16 +12,15 @@ from bokeh.tile_providers import get_provider
 from coordinate_transformation.to_web_merc import toWebMerc
 
 
-# load data
+# load data from CSV file
 home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 avg_weekdays_sum_diff_df = pd.read_csv(
     data_dir / 'avg_weekday_sum_diff_merc_coord.csv', index_col='Date')
 
-# bokeh output
+# bokeh output HTML file
 output_file("traffic_visualization.html")
 tile_provider = get_provider('CARTODBPOSITRON')
-
 
 # London GPS coordinate range
 london_x_range = (-0.25, 0.015)
@@ -37,7 +36,8 @@ p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
 p.add_tile(tile_provider)
 
 
-# group elements of list in tuples of four elements each
+# group elements of list in tuples of four elements each for
+# sum, difference, latitude and longitude (in Mercator coords)
 def station_chunk(it, size):
     it = iter(it)
     return iter(lambda: tuple(islice(it, size)), ())
@@ -57,12 +57,12 @@ time_interval_list = [
     time for interval_data in bike_flux_list for time in interval_data.keys()]
 
 for i, time in enumerate(time_interval_list):
-    # print(bike_flux_list[i][time])
-    # print(type(bike_flux_list[i][time]))
     flux_source = ColumnDataSource(data=bike_flux_list[i][time])
     p.circle(x='long', y='lat', size='sum_flux',
              fill_color='royalblue', fill_alpha=0.5, source=flux_source)
-    tooltips = [('Total traffic', '@sum_flux')]
+    tooltips = [('Total traffic', '@sum_flux'),
+                ('Net flux', '@diff')
+                ]
     break
 
 p.add_tools(HoverTool(tooltips=tooltips))
