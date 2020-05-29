@@ -1,1 +1,0 @@
-These two Python script serve the purpose to aggregate the individual CSV files with the information on the bicycle journeys and stations into one CSV file that is imported into a PostgreSQL database.
