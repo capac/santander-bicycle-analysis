@@ -1,7 +1,9 @@
 # /usr/bin/env python3
 
+from bokeh.models import ColumnDataSource, LinearColorMapper
+from bokeh.plotting import figure, show
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, HoverTool, Div
+from bokeh.models import ColumnDataSource, HoverTool, Div, LinearColorMapper
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout, widgetbox
 from bokeh.io import curdoc
@@ -39,19 +41,33 @@ p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
 p.add_tile(tile_provider)
 p.add_tools(HoverTool(tooltips=tooltips))
 
+color_mapper = LinearColorMapper(palette='Turbo256', low=-5e2, high=5e2)
 
 p.circle(x='long',
          y='lat',
          size='sum_flux',
-         fill_color='royalblue',
+         fill_color={'field': 'diff_flux', 'transform': color_mapper},
          fill_alpha=0.5,
          source=source)
-inputs = widgetbox(hour_interval_selector, flux_slider)
 
-plot_layout = layout([
-                     [homepage],
-                     [inputs],
-                     [p]])
+inputs=widgetbox(hour_interval_selector, flux_slider)
+
+plot_layout=layout([[homepage], [inputs], [p]])
 
 curdoc().add_root(plot_layout)
-curdoc().title = 'Bicycle Traffic in London UK'
+curdoc().title='Bicycle Traffic in London UK'
+
+
+# TOOLS = 'pan,wheel_zoom,box_zoom,reset'
+# p = figure(tools=TOOLS)
+
+# x = np.linspace(-10, 10, 200)
+# y = -x**2
+
+# data_source = ColumnDataSource({'x': x, 'y': y})
+
+# color_mapper = LinearColorMapper(palette='Magma256', low=min(y), high=max(y))
+
+# specify that we want to map the colors to the y values,
+# this could be replaced with a list of colors
+# p.scatter(x, y, color={'field': 'y', 'transform': color_mapper})
