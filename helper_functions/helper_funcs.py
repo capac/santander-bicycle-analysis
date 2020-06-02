@@ -3,7 +3,6 @@
 from pathlib import Path
 from itertools import islice
 import os
-import numpy as np
 import pandas as pd
 import numpy as np
 from bokeh.models import ColumnDataSource

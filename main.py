@@ -1,14 +1,12 @@
 # /usr/bin/env python3
 
-from bokeh.models import ColumnDataSource, LinearColorMapper
-from bokeh.plotting import figure, show
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, HoverTool, Div, LinearColorMapper
+from bokeh.models import LinearColorMapper, HoverTool, Div
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout, widgetbox
 from bokeh.io import curdoc
 from coordinate_transformation.to_web_merc import toWebMerc
-from helper_functions.helper_funcs import update, flux_slider, hour_interval_selector, source
+from helper_functions.helper_funcs import flux_slider, hour_interval_selector, source
 import os
 
 # bokeh output HTML file
@@ -26,7 +24,7 @@ merc_lower_left = toWebMerc(london_x_range[0], london_y_range[0])
 merc_upper_right = toWebMerc(london_x_range[1], london_y_range[1])
 
 
-tooltips = [('Total traffic', '@sum_flux'), ('Net flux', '@diff_flux')]
+tooltips = [('Total traffic', '@sum_flux{0,0.00}'), ('Net flux', '@diff_flux{0,0.00}')]
 
 # range bounds supplied in web mercator coordinates
 p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
