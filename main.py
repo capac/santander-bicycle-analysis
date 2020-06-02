@@ -56,18 +56,3 @@ plot_layout=layout([[homepage], [inputs], [p]])
 
 curdoc().add_root(plot_layout)
 curdoc().title='Bicycle Traffic in London UK'
-
-
-# TOOLS = 'pan,wheel_zoom,box_zoom,reset'
-# p = figure(tools=TOOLS)
-
-# x = np.linspace(-10, 10, 200)
-# y = -x**2
-
-# data_source = ColumnDataSource({'x': x, 'y': y})
-
-# color_mapper = LinearColorMapper(palette='Magma256', low=min(y), high=max(y))
-
-# specify that we want to map the colors to the y values,
-# this could be replaced with a list of colors
-# p.scatter(x, y, color={'field': 'y', 'transform': color_mapper})
