@@ -1,7 +1,7 @@
 # /usr/bin/env python3
 
 from bokeh.plotting import figure
-from bokeh.models import LinearColorMapper, HoverTool, Div
+from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar, ContinuousTicker
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout, widgetbox
 from bokeh.io import curdoc
@@ -34,12 +34,20 @@ p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
            title='Average Daily Public Bicycle Traffic in London UK',
            toolbar_location=None,
            tooltips=tooltips,
-           width=1000,
-           height=800)
+           width=950,
+           height=750)
 p.add_tile(tile_provider)
 p.add_tools(HoverTool(tooltips=tooltips))
 
 color_mapper = LinearColorMapper(palette='Turbo256', low=-5e2, high=5e2)
+
+color_bar = ColorBar(color_mapper=color_mapper,
+                     label_standoff=12,
+                     border_line_color=None,
+                     location=(0,0))
+
+p.add_layout(color_bar, 'right')
+
 
 p.circle(x='long',
          y='lat',
