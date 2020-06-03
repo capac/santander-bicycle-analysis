@@ -1,21 +1,18 @@
 # /usr/bin/env python3
 
 from bokeh.plotting import figure
-from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar, ContinuousTicker
+from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout, widgetbox
 from bokeh.io import curdoc
 from coordinate_transformation.to_web_merc import toWebMerc
-from helper_functions.helper_funcs import flux_slider, hour_interval_selector, source
-import os
+from helper_functions.helper_funcs import flux_slider, hour_interval_selector, source, update
 
 # bokeh output HTML file
 tile_provider = get_provider('CARTODBPOSITRON')
 
 # base HTML web page which contains Bokeh visualization plot
-homepage = Div(text=open(os.path.join(os.getcwd(),
-                                      'traffic_visualization.html')).read(), width=800)
-
+homepage = Div(text=open('traffic_visualization.html').read(), width=800)
 
 # London GPS coordinate range
 london_x_range = (-0.25, 0.015)
@@ -38,8 +35,8 @@ p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
            height=750)
 p.add_tile(tile_provider)
 p.add_tools(HoverTool(tooltips=tooltips))
-
-color_mapper = LinearColorMapper(palette='Turbo256', low=-5e2, high=5e2)
+# print(f'''source.data['diff_flux_min']: {source.data['diff_flux_min']}''')
+color_mapper = LinearColorMapper(palette='Turbo256', low=-6e2, high=6e2)
 
 color_bar = ColorBar(color_mapper=color_mapper,
                      label_standoff=12,
@@ -48,7 +45,6 @@ color_bar = ColorBar(color_mapper=color_mapper,
 
 p.add_layout(color_bar, 'right')
 
-
 p.circle(x='long',
          y='lat',
          size='sum_flux',
@@ -56,9 +52,12 @@ p.circle(x='long',
          fill_alpha=0.5,
          source=source)
 
-inputs=widgetbox(hour_interval_selector, flux_slider)
+inputs = widgetbox(hour_interval_selector, flux_slider)
 
-plot_layout=layout([[homepage], [inputs], [p]])
+plot_layout = layout([[homepage], [inputs], [p]])
+
+# update data to show initial data point on plot
+update()
 
 curdoc().add_root(plot_layout)
-curdoc().title='Bicycle Traffic in London UK'
+curdoc().title = 'Bicycle Traffic in London UK'

@@ -16,9 +16,10 @@ avg_weekdays_sum_diff_df = pd.read_csv(data_dir /
                                        'avg_weekday_sum_diff_merc_coord.csv',
                                        index_col='Date')
 
-
 # group elements of list in tuples of four elements each for
 # sum, difference, latitude and longitude (in Mercator coords)
+
+
 def station_chunk(it, size):
     it = iter(it)
     return iter(lambda: tuple(islice(it, size)), ())
@@ -53,7 +54,7 @@ hour_interval_selector.on_change('value', lambda attr, old, new: update())
 
 # minimum traffic flux slider
 flux_slider = Slider(start=0,
-                     end=30000,
+                     end=40000,
                      value=0,
                      step=10,
                      title='Minimum Total Traffic (in units of hundreds)')
@@ -67,11 +68,11 @@ def select_time():
 
     selected_df = pd.DataFrame(
         selected[hour_interval][hour_interval_selector.value])
-    print(selected_df['sum_flux'])
+    # print(selected_df['sum_flux'])
     selected_df = selected_df[selected_df['sum_flux'] >= min_flux]
 
-    print('Hour interval =', hour_interval)
-    print('Min flux =', min_flux)
+    # print('Hour interval =', hour_interval)
+    # print('Min flux =', min_flux)
 
     return selected_df
 
