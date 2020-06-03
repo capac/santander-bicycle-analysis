@@ -90,4 +90,4 @@ def update():
         lat=df['lat'],
         sum_flux=df['sum_flux'],
         diff_flux=df['diff_flux']
-    )
+        )

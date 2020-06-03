@@ -20,8 +20,10 @@ london_y_range = (51.436, 51.568)
 merc_lower_left = toWebMerc(london_x_range[0], london_y_range[0])
 merc_upper_right = toWebMerc(london_x_range[1], london_y_range[1])
 
-
 tooltips = [('Total traffic', '@sum_flux{0,0.00}'), ('Net flux', '@diff_flux{0,0.00}')]
+
+# update data to show initial data point on plot
+update()
 
 # range bounds supplied in web mercator coordinates
 p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
@@ -35,8 +37,10 @@ p = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
            height=750)
 p.add_tile(tile_provider)
 p.add_tools(HoverTool(tooltips=tooltips))
-# print(f'''source.data['diff_flux_min']: {source.data['diff_flux_min']}''')
-color_mapper = LinearColorMapper(palette='Turbo256', low=-6e2, high=6e2)
+
+color_mapper = LinearColorMapper(palette='Turbo256',
+                                 low=-6e2,
+                                 high=6e2)
 
 color_bar = ColorBar(color_mapper=color_mapper,
                      label_standoff=12,
@@ -52,12 +56,11 @@ p.circle(x='long',
          fill_alpha=0.5,
          source=source)
 
-inputs = widgetbox(hour_interval_selector, flux_slider)
+hour_interval_selector_input = widgetbox(hour_interval_selector)
+flux_slider_input = widgetbox(flux_slider)
 
-plot_layout = layout([[homepage], [inputs], [p]])
+plot_layout = layout([[homepage], [p], [hour_interval_selector_input, flux_slider_input]])
 
-# update data to show initial data point on plot
-update()
 
 curdoc().add_root(plot_layout)
 curdoc().title = 'Bicycle Traffic in London UK'
