@@ -29,10 +29,9 @@ def station_chunk(it, size):
 # scale factor to show data points in units of hundreds
 scale_factor = 1e2
 
+
 # return a list of dictionaries, each one of which has time as key and
 # a dictionary as value with sum_flux, diff_flux, lat and long values
-
-
 def bike_flux(flux_df):
     bike_flux_list = []
     for row in flux_df.itertuples():
@@ -113,6 +112,7 @@ flux_slider = Slider(start=0,
                      width=100,
                      align='start',
                      title='Lower limit of total traffic flux (in units of hundreds)')
+ # allows scaling before update
 flux_slider.value = flux_slider.value/scale_factor
 flux_slider.on_change('value', lambda attr, old, new: update())
 

@@ -16,7 +16,7 @@ silence(MISSING_RENDERERS, True)
 # bokeh output HTML file
 tile_provider = get_provider('CARTODBPOSITRON')
 
-# base HTML web page which contains Bokeh visualization plot
+# base HTML web page for Bokeh visualization
 homepage = Div(text=open('traffic_visualization.html').read(), width=800)
 
 # London GPS coordinate range
@@ -25,9 +25,11 @@ london_y_range = (51.436, 51.568)
 merc_lower_left = toWebMerc(london_x_range[0], london_y_range[0])
 merc_upper_right = toWebMerc(london_x_range[1], london_y_range[1])
 
+# tooltips on dat point hoverover
 tooltips = [('Total traffic', '@sum_flux{0,0.00}'),
             ('Net flux', '@diff_flux{0,0.00}')]
 
+# icons in tool bar
 toolbox = ['pan', 'wheel_zoom', 'box_zoom', 'save', 'reset']
 
 # update data to show initial data point on plot
@@ -49,6 +51,7 @@ plot = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
 plot.add_tile(tile_provider)
 plot.add_tools(HoverTool(tooltips=tooltips))
 
+# color bar
 color_mapper = LinearColorMapper(palette='Turbo256',
                                  low=-6e2,
                                  high=5e2)
@@ -70,10 +73,8 @@ color_bar_plot = figure(title="Net Traffic Flux (in units of hundreds)",
 
 color_bar_plot.add_layout(color_bar, 'right')
 color_bar_plot.title.align="center"
-# color_bar_plot.title.text_font_size = '10pt'
 
-# plot.add_layout(color_bar, 'right')
-
+# data points
 plot.circle(x='long',
             y='lat',
             size='sum_flux',
