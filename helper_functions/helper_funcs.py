@@ -26,7 +26,7 @@ def station_chunk(it, size):
     return iter(lambda: tuple(islice(it, size)), ())
 
 
-# scale factor for scale visualization of data points
+# scale factor to show data points in units of hundreds
 scale_factor = 1e2
 
 # return a list of dictionaries, each one of which has time as key and
@@ -56,16 +56,10 @@ time_interval_dict = {time_interval: bike_flux_list.index(interval_data) for int
 def select_time():
     selected = bike_flux_list
     hour_interval = time_interval_dict[hour_interval_selector.value]
-    min_flux = flux_slider.value/scale_factor
-
+    min_flux = flux_slider.value
     selected_df = pd.DataFrame(
         selected[hour_interval][hour_interval_selector.value])
-    # print(selected_df['sum_flux'])
     selected_df = selected_df[selected_df['sum_flux'] >= min_flux]
-
-    # print('Hour interval =', hour_interval)
-    # print('Min flux =', min_flux)
-
     return selected_df
 
 
@@ -76,13 +70,11 @@ source = ColumnDataSource(
 
 def update():
     df = select_time()
-
     source.data = dict(
         long=df['long'],
         lat=df['lat'],
         sum_flux=df['sum_flux'],
-        diff_flux=df['diff_flux']
-    )
+        diff_flux=df['diff_flux'])
 
 
 def animate_update():
@@ -115,12 +107,13 @@ hour_interval_selector.on_change('value', lambda attr, old, new: update())
 
 # minimum traffic flux slider
 flux_slider = Slider(start=0,
-                     end=40000,
+                     end=600,
                      value=0,
-                     step=10,
+                     step=1,
                      width=100,
                      align='start',
-                     title='Lower Limit to Traffic Flux (in units of hundreds)')
+                     title='Lower limit of total traffic flux (in units of hundreds)')
+flux_slider.value = flux_slider.value/scale_factor
 flux_slider.on_change('value', lambda attr, old, new: update())
 
 # hourly drop down and minimum flux selector
@@ -131,6 +124,6 @@ slider_input = widgetbox(flux_slider, sizing_mode='scale_width')
 button = Button(label='► Play',
                 width=60,
                 sizing_mode='scale_width',
-                name='Traffic Time Lapse',
+                name='Traffic time lapse',
                 align='end')
 button.on_click(animate)
