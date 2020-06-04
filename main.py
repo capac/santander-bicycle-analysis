@@ -3,10 +3,10 @@
 from bokeh.plotting import figure
 from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar
 from bokeh.tile_providers import get_provider
-from bokeh.layouts import layout, widgetbox
+from bokeh.layouts import layout
 from bokeh.io import curdoc
 from coordinate_transformation.to_web_merc import toWebMerc
-from helper_functions.helper_funcs import flux_slider, hour_interval_selector, source, update, animate, button
+from helper_functions.helper_funcs import hour_inputs, slider_input, source, update, animate, button
 
 # bokeh output HTML file
 tile_provider = get_provider('CARTODBPOSITRON')
@@ -20,10 +20,10 @@ london_y_range = (51.436, 51.568)
 merc_lower_left = toWebMerc(london_x_range[0], london_y_range[0])
 merc_upper_right = toWebMerc(london_x_range[1], london_y_range[1])
 
-tooltips = [
-    ('Total traffic', '@sum_flux{0,0.00}'), ('Net flux', '@diff_flux{0,0.00}')]
+tooltips = [('Total traffic', '@sum_flux{0,0.00}'),
+            ('Net flux', '@diff_flux{0,0.00}')]
 
-toolbox = ['pan', 'box_zoom', 'box_select', 'hover', 'save', 'reset']
+toolbox = ['pan', 'wheel_zoom', 'box_zoom', 'box_select', 'save', 'reset']
 
 # update data to show initial data point on plot
 update()
@@ -36,7 +36,6 @@ plot = figure(x_range=(merc_lower_left[0], merc_upper_right[0]),
               title='Average Daily Public Bicycle Traffic in London UK',
               toolbar_location='below',
               tools=toolbox,
-              tooltips=tooltips,
               toolbar_sticky=False,
               width=950,
               height=750)
@@ -61,13 +60,11 @@ plot.circle(x='long',
             fill_alpha=0.5,
             source=source)
 
-hour_inputs = widgetbox(hour_interval_selector, sizing_mode='scale_width')
-slider_input = widgetbox(flux_slider, sizing_mode='scale_width')
+# main plot layout
+plot_layout = layout([[homepage],
+                      [plot],
+                      [hour_inputs, slider_input, button]])
 
-
-plot_layout = layout(
-    [[homepage], [plot], [hour_inputs, slider_input, button]])
-
-
+# attaches layout to current document
 curdoc().add_root(plot_layout)
 curdoc().title = 'Bicycle Traffic in London UK'
