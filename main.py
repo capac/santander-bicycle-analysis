@@ -5,8 +5,13 @@ from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout
 from bokeh.io import curdoc
+from bokeh.core.validation import silence
+from bokeh.core.validation.warnings import MISSING_RENDERERS
 from coordinate_transformation.to_web_merc import toWebMerc
 from helper_functions.helper_funcs import hour_inputs, slider_input, source, update, animate, button
+
+# silence unnecessary warnings
+silence(MISSING_RENDERERS, True)
 
 # bokeh output HTML file
 tile_provider = get_provider('CARTODBPOSITRON')

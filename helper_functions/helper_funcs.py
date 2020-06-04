@@ -107,7 +107,7 @@ hour_interval_selector.on_change('value', lambda attr, old, new: update())
 
 # minimum traffic flux slider
 flux_slider = Slider(start=0,
-                     end=600,
+                     end=300,
                      value=0,
                      step=1,
                      width=100,
