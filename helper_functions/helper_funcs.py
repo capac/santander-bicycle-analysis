@@ -20,13 +20,13 @@ avg_weekdays_sum_diff_df = pd.read_csv(data_dir /
 
 
 # group elements of list in tuples of four elements each for
-# sum, difference, latitude and longitude (in Mercator coords)
+# sum, difference, latitude and longitude in Mercator coords
 def station_chunk(it, size):
     it = iter(it)
     return iter(lambda: tuple(islice(it, size)), ())
 
 
-# scale factor to show data points in units of hundreds
+# scale factor for data points in units of hundreds
 scale_factor = 1e2
 
 
@@ -46,7 +46,7 @@ def bike_flux(flux_df):
 
 
 # time interval dictionary with hour interval as
-# key and list index for data dictionary and value
+# key and list index for data dictionary as value
 bike_flux_list = bike_flux(avg_weekdays_sum_diff_df)
 time_interval_dict = {time_interval: bike_flux_list.index(interval_data) for interval_data
                       in bike_flux_list for time_interval in interval_data.keys()}

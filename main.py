@@ -19,7 +19,7 @@ tile_provider = get_provider('CARTODBPOSITRON')
 # base HTML web page for Bokeh visualization
 homepage = Div(text=open('traffic_visualization.html').read(), width=800)
 
-# London GPS coordinate range
+# London longitude and latitude GPS coordinate range
 london_x_range = (-0.25, 0.015)
 london_y_range = (51.436, 51.568)
 merc_lower_left = toWebMerc(london_x_range[0], london_y_range[0])
@@ -32,7 +32,7 @@ tooltips = [('Total traffic', '@sum_flux{0,0.00}'),
 # icons in tool bar
 toolbox = ['pan', 'wheel_zoom', 'box_zoom', 'save', 'reset']
 
-# update data to show initial data point on plot
+# update data to show initial data points at 00:00:00 on the plot
 update()
 
 # range bounds supplied in web mercator coordinates
@@ -72,7 +72,7 @@ color_bar_plot = figure(title="Net Traffic Flux (in units of hundreds)",
                         outline_line_color=None)
 
 color_bar_plot.add_layout(color_bar, 'right')
-color_bar_plot.title.align="center"
+color_bar_plot.title.align = "center"
 
 # data points
 plot.circle(x='long',
