@@ -1,6 +1,6 @@
 # /usr/bin/env python3
 
-from bokeh.plotting import figure, reset_output, output_file, show
+from bokeh.plotting import figure
 from bokeh.models import LinearColorMapper, HoverTool, Div, ColorBar
 from bokeh.tile_providers import get_provider
 from bokeh.layouts import layout
@@ -9,9 +9,6 @@ from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import MISSING_RENDERERS
 from coordinate_transformation.to_web_merc import toWebMerc
 from helper_functions.helper_funcs import hour_inputs, slider_input, source, update, animate, button
-
-reset_output()
-output_file('basic_plot.html')
 
 # silence unnecessary warnings
 silence(MISSING_RENDERERS, True)
@@ -93,4 +90,3 @@ plot_layout = layout([[homepage],
 # attaches layout to current document
 curdoc().add_root(plot_layout)
 curdoc().title = 'Bicycle Traffic in London UK'
-show(plot_layout)
