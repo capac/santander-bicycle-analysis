@@ -10,14 +10,14 @@ from bokeh.core.validation.warnings import MISSING_RENDERERS
 from coordinate_transformation.to_web_merc import toWebMerc
 from helper_functions.helper_funcs import hour_inputs, slider_input, source, update, animate, button
 
-# silence unnecessary warnings
+# silence unnecessary warnings for color_bar_plot
 silence(MISSING_RENDERERS, True)
 
 # bokeh output HTML file
 tile_provider = get_provider('CARTODBPOSITRON')
 
 # base HTML web page for Bokeh visualization
-homepage = Div(text=open('traffic_visualization.html').read(), width=800)
+homepage = Div(text=open('traffic_plot.html').read(), width=800)
 
 # London longitude and latitude GPS coordinate range
 london_x_range = (-0.25, 0.015)
