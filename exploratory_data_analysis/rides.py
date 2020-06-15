@@ -36,7 +36,7 @@ days = bike_df['Day'].loc[filter_]
 rides = bike_df['Sum_Journeys'].loc[filter_]
 fig, axes = plt.subplots(figsize=(8, 6))
 axes.scatter(days, rides/1e4, alpha=0.6, marker='o',
-             color='cornflowerblue', edgecolor='k')
+             color='dodgerblue', edgecolor='k')
 
 # London tube strikes, in tuples with years, months and days
 # complete_london_tube_strike_list = [(2012, 12, 26), (2014, 2, 4), (2014, 2, 5), (2014, 2, 6), (2014, 4, 28), (2014, 4, 29), (2014, 4, 30), (2014, 8, 22), (2014, 8, 23), (2014, 12, 1), (2015, 7, 8), (2015, 7, 9), (2015, 8, 5), (2015, 8, 6)]
@@ -66,11 +66,11 @@ axes.set_xlim(datemin, datemax)
 fig.autofmt_xdate()
 
 # set axes labels
-axes.set_xlabel('Dates')
-axes.set_ylabel('Rides per day (in units of 10,000)')
+axes.set_xlabel('Dates', fontsize=12)
+axes.set_ylabel('Rides per day (in units of 10,000)', fontsize=12)
 axes.set_title(
-    f'Number of rides per day from {days.min():%Y-%m-%d} to {days.max():%Y-%m-%d}')
+    f'Number of rides per day from {days.min():%Y-%m-%d} to {days.max():%Y-%m-%d}', fontsize=14)
 fig.tight_layout()
-axes.grid(linestyle=':')
+# axes.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 plt.show()
