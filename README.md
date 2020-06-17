@@ -18,6 +18,8 @@ The exploratory data analysis folder contains plots for:
 
 ![Total number of rides per month](https://github.com/capac/santander-bicycle-analysis/blob/master/exploratory_data_analysis/plots/web_plots/tot_rides_by_month_small.png "Total number of rides per month")
 
+![Ratio of number of rides per weekday over weekend per month](https://github.com/capac/santander-bicycle-analysis/blob/master/exploratory_data_analysis/plots/web_plots/ratio_rides_by_month_small.png "Ratio of number of rides per weekday over weekend per month")
+
 ![Total number of rides per day from 2012-01-04 to 2016-03-08](https://github.com/capac/santander-bicycle-analysis/blob/master/exploratory_data_analysis/plots/web_plots/tot_num_rides_per_day_small.png "Total number of rides per day from 2012-01-04 to 2016-03-08")
 
 ![Total number of rides per hour on weekdays](https://github.com/capac/santander-bicycle-analysis/blob/master/exploratory_data_analysis/plots/web_plots/tot_num_rides_hour_weekdays_small.png "Total number of rides per hour on weekdays")
