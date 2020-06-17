@@ -42,9 +42,9 @@ axes.hist(bike_df['Average'], 60, range=[2, 6], edgecolor='k', color='dodgerblue
 avg_num_ride = bike_df['Average'].mean()
 axes.vlines(avg_num_ride, axes.yaxis.get_data_interval()[
             0], axes.yaxis.get_data_interval()[1], linestyles=':', label=f'Average: {avg_num_ride:.1f}')
-axes.set_xlabel('Average number of journeys per bike per weekday')
+axes.set_xlabel('Average number of rides per bike on weekdays')
 axes.set_ylabel('Counts')
-axes.set_title('Histogram of average number of journeys per bike per weekday')
+axes.set_title('Histogram of average number of rides per bike on weekdays')
 # plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 plt.legend(loc='best')
