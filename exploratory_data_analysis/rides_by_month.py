@@ -20,7 +20,9 @@ query_wkend = ''' SELECT strftime("%m", End_Date) AS Month,
                    WHERE strftime("%w", End_Date) IN ("0", "6")
                 GROUP BY Month'''
 query_results = [(con.execute(cur), con.execute(cur).fetchall()) for cur in [query_wkday, query_wkend]]
-print(query_results[0][0].description, query_results[0][1])
+print([x[0] for x in query_results[0][0].description])
+print(query_results[0][1])
+
 results_df_list = [pd.DataFrame(result[1], columns=[x[0] for x in result[0].description]) for result in query_results]
 
 results_df = pd.concat(results_df_list, axis=1)
