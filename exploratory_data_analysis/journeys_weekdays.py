@@ -13,7 +13,7 @@ home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 
 # connect to SQLite DB on laptop
-flow_journey_db = data_dir / 'FlowJourneyData.db'
+flow_journey_db = data_dir / 'journey-data_2012-2016.db'
 con = sqlite3.connect(flow_journey_db)
 query = '''SELECT Day, 
                   Bike_Id, 
