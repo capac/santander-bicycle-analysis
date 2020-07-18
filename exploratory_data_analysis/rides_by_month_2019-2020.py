@@ -37,7 +37,7 @@ columns = [['Weekends_2019', 'Weekdays_2019'], ['Weekends_2020', 'Weekdays_2020'
 colors = [['forestgreen', 'limegreen'], ['royalblue', 'dodgerblue']]
 width = 0.35
 widths = [-width, width]
-df = results_df.iloc[0:5]
+df = results_df.iloc[0:5].copy()
 df.loc[:, [c for col in columns for c in col]] = df[[c for col in columns for c in col]].divide(1e5)
 # print(df)
 for col, color, wd in zip(columns, colors, widths):
