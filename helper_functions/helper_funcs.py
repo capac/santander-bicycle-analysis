@@ -15,7 +15,7 @@ from bokeh.io import curdoc
 home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 avg_weekdays_sum_diff_df = pd.read_csv(data_dir /
-                                       'avg_weekday_sum_diff_2019_merc_coord.csv',
+                                       'avg_weekday_sum_diff_2019_station_name_merc_coord.csv',
                                        index_col='Date')
 
 
@@ -35,13 +35,14 @@ scale_factor = 1e0 # 1e2
 def bike_flux(flux_df):
     bike_flux_list = []
     for row in flux_df.itertuples():
-        lat, long, sum_flux, diff_flux = list(
-            map(tuple, zip(*station_chunk(row[1:], 4))))
+        station_name, lat, long, sum_flux, diff_flux = list(
+            map(tuple, zip(*station_chunk(row[1:], 5))))
         sum_flux = np.array(sum_flux)/scale_factor
         diff_flux = np.array(diff_flux)/scale_factor
         bike_flux_list.append(
             {row[0]: {'sum_flux': sum_flux, 'diff_flux': diff_flux,
-                      'lat': lat, 'long': long}})
+                      'lat': lat, 'long': long,
+                      'station_name': station_name}})
     # print(bike_flux_list)
     return bike_flux_list
 
@@ -64,7 +65,7 @@ def select_time():
 
 # source data dict
 source = ColumnDataSource(
-    data=dict(long=[], lat=[], sum_flux=[], diff_flux=[]))
+    data=dict(long=[], lat=[], sum_flux=[], diff_flux=[], station_name=[]))
 
 
 def update():
@@ -73,7 +74,8 @@ def update():
         long=df['long'],
         lat=df['lat'],
         sum_flux=df['sum_flux'],
-        diff_flux=df['diff_flux'])
+        diff_flux=df['diff_flux'],
+        station_name=df['station_name'])
 
 
 def animate_update():

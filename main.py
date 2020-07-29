@@ -27,7 +27,8 @@ merc_upper_right = toWebMerc(london_x_range[1], london_y_range[1])
 
 # tooltips on dat point hoverover
 tooltips = [('Total traffic', '@sum_flux{0,0.00}'),
-            ('Net flux', '@diff_flux{0,0.00}')]
+            ('Net flux', '@diff_flux{0,0.00}'),
+            ('Station name', '@station_name')]
 
 # icons in tool bar
 toolbox = ['pan', 'wheel_zoom', 'box_zoom', 'save', 'reset']
