@@ -53,8 +53,8 @@ plot.add_tools(HoverTool(tooltips=tooltips))
 
 # color bar
 color_mapper = LinearColorMapper(palette='Turbo256',
-                                 low=-6e2,
-                                 high=5e2)
+                                 low=-1e2,
+                                 high=1e2)
 
 color_bar = ColorBar(color_mapper=color_mapper,
                      label_standoff=12,
@@ -63,7 +63,7 @@ color_bar = ColorBar(color_mapper=color_mapper,
                      location=(0, 0))
 
 
-color_bar_plot = figure(title="Net Traffic Flux (in units of hundreds)",
+color_bar_plot = figure(title="Net Traffic Flux",
                         title_location="right",
                         height=750,
                         width=120, 

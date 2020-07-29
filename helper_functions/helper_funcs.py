@@ -15,7 +15,7 @@ from bokeh.io import curdoc
 home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 avg_weekdays_sum_diff_df = pd.read_csv(data_dir /
-                                       'avg_weekday_sum_diff_merc_coord.csv',
+                                       'avg_weekday_sum_diff_2019_merc_coord.csv',
                                        index_col='Date')
 
 
@@ -27,7 +27,7 @@ def station_chunk(it, size):
 
 
 # scale factor for data points in units of hundreds
-scale_factor = 1e2
+scale_factor = 1e0 # 1e2
 
 
 # return a list of dictionaries, each one of which has time as key and
@@ -35,15 +35,15 @@ scale_factor = 1e2
 def bike_flux(flux_df):
     bike_flux_list = []
     for row in flux_df.itertuples():
-        sum_flux, diff_flux, lat, long = list(
+        lat, long, sum_flux, diff_flux = list(
             map(tuple, zip(*station_chunk(row[1:], 4))))
         sum_flux = np.array(sum_flux)/scale_factor
         diff_flux = np.array(diff_flux)/scale_factor
         bike_flux_list.append(
             {row[0]: {'sum_flux': sum_flux, 'diff_flux': diff_flux,
                       'lat': lat, 'long': long}})
+    # print(bike_flux_list)
     return bike_flux_list
-
 
 # time interval dictionary with hour interval as
 # key and list index for data dictionary as value
@@ -92,7 +92,7 @@ def animate():
     global callback_id
     if button.label == '► Play':
         button.label = '❚❚ Pause'
-        callback_id = curdoc().add_periodic_callback(animate_update, 350)
+        callback_id = curdoc().add_periodic_callback(animate_update, 400)
     else:
         button.label = '► Play'
         curdoc().remove_periodic_callback(callback_id)
@@ -106,12 +106,12 @@ hour_interval_selector.on_change('value', lambda attr, old, new: update())
 
 # minimum traffic flux slider
 flux_slider = Slider(start=0,
-                     end=300,
+                     end=100,
                      value=0,
                      step=1,
-                     width=100,
+                     width=1,
                      align='start',
-                     title='Lower limit of total traffic flux (in units of hundreds)')
+                     title='Lower limit of total traffic flux')
  # allows scaling before update
 flux_slider.value = flux_slider.value/scale_factor
 flux_slider.on_change('value', lambda attr, old, new: update())
