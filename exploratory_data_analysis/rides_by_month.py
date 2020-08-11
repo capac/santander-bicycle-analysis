@@ -8,11 +8,11 @@ import os, sqlite3
 
 home = os.environ['HOME']
 data_dir = Path(home) / r'Programming/data/s2ds-project-data'
-con = sqlite3.connect(data_dir / 'journey-data_2012-2016.db')
+con = sqlite3.connect(data_dir / 'journey-data_2019-2020.db')
 query_wkday = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekDay_Rides
                     FROM Journeys
-                   WHERE strftime("%w", End_Date) NOT IN ("0", "6")
+                   WHERE strftime("%w", End_Date) NOT IN ("0", "6") AND strftime("%Y", End_Date) = "2019"
                 GROUP BY Month'''
 query_wkend = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekEnd_Rides
@@ -20,8 +20,8 @@ query_wkend = ''' SELECT strftime("%m", End_Date) AS Month,
                    WHERE strftime("%w", End_Date) IN ("0", "6")
                 GROUP BY Month'''
 query_results = [(con.execute(cur), con.execute(cur).fetchall()) for cur in [query_wkday, query_wkend]]
-print([x[0] for x in query_results[0][0].description])
-print(query_results[0][1])
+# print([x[0] for x in query_results[0][0].description])
+# print(query_results[0][1])
 
 results_df_list = [pd.DataFrame(result[1], columns=[x[0] for x in result[0].description]) for result in query_results]
 

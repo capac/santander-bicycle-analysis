@@ -8,11 +8,11 @@ import os, sqlite3
 
 home = os.environ['HOME']
 data_dir = Path(home) / r'Programming/data/s2ds-project-data'
-con = sqlite3.connect(data_dir / 'FlowJourneyData.db')
+con = sqlite3.connect(data_dir / 'journey-data_2019-2020.db')
 query_wkday = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekDay_Rides
                     FROM Journeys
-                   WHERE strftime("%w", End_Date) NOT IN ("0", "6")
+                   WHERE strftime("%w", End_Date) NOT IN ("0", "6") AND strftime("%Y", End_Date) = "2019"
                 GROUP BY Month'''
 query_wkend = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekEnd_Rides

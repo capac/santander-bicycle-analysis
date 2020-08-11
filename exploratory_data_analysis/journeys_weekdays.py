@@ -13,7 +13,7 @@ home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 
 # connect to SQLite DB on laptop
-flow_journey_db = data_dir / 'journey-data_2012-2016.db'
+flow_journey_db = data_dir / 'journey-data_2019-2020.db'
 con = sqlite3.connect(flow_journey_db)
 query = '''SELECT Day, 
                   Bike_Id, 
@@ -39,9 +39,9 @@ bike_df = pd.DataFrame(journey_results, columns=[
 # histogram
 fig, axes = plt.subplots(figsize=(8, 6))
 axes.hist(bike_df['Average'], 60, range=[2, 6], edgecolor='k', color='dodgerblue')
-avg_num_ride = bike_df['Average'].mean()
+avg_num_ride = bike_df['Average'].median()
 axes.vlines(avg_num_ride, axes.yaxis.get_data_interval()[
-            0], axes.yaxis.get_data_interval()[1], linestyles=':', label=f'Average: {avg_num_ride:.1f}')
+            0], axes.yaxis.get_data_interval()[1], linestyles=':', label=f'Median: {avg_num_ride:.1f}')
 axes.set_xlabel('Average number of rides per bike on weekdays')
 axes.set_ylabel('Counts')
 axes.set_title('Histogram of average number of rides per bike on weekdays')

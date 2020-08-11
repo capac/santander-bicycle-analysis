@@ -9,7 +9,7 @@ import sqlite3
 
 home = os.environ['HOME']
 data_dir = Path(home) / r'Programming/data/s2ds-project-data'
-con = sqlite3.connect(data_dir / 'FlowJourneyData.db')
+con = sqlite3.connect(data_dir / 'journey-data_2019-2020.db')
 query = ''' SELECT Hour, 
                    ROUND(AVG(Num_Rides), 2) AS Avg_Rides, 
                    ROUND(AVG(Num_Bikes), 2) AS Avg_Bikes 
