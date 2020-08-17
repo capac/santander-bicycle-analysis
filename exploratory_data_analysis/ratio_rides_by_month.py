@@ -34,7 +34,7 @@ rides_results_df = rides_results_df[['Monthly Weekend Ratio', 'Monthly Weekday R
 ax = rides_results_df.plot(kind='bar', stacked=True, figsize=(8, 6), color=['limegreen', 'dodgerblue'], fontsize=12, edgecolor='k')
 ax.set_xlabel('Month', fontsize=12)
 ax.set_ylabel('Ratio', fontsize=12)
-ax.set_title('Ratio of number of rides per weekday over weekend per month', fontsize=14)
+ax.set_title('Ratio of number of rides per weekday over weekend per month in 2019', fontsize=14)
 
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), labels=['Weekend', 'Weekday'])
