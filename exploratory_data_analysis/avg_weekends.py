@@ -18,6 +18,7 @@ query = ''' SELECT Hour,
                            COUNT(DISTINCT(Bike_Id)) AS Num_Bikes
                       FROM Journeys
                      WHERE strftime("%w", End_Date) IN ("0", "6")
+                       AND strftime("%Y", End_Date) = "2019"
                   GROUP BY Day, Hour
                     HAVING Duration > 0) GROUP BY Hour'''
 cur = con.execute(query)
@@ -29,9 +30,9 @@ results_df = pd.DataFrame(query_results, columns=[
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.bar(results_df['Hour'], results_df['Avg_Rides'], color='dodgerblue',
        edgecolor='k')
-ax.set_xlabel('Hour')
-ax.set_ylabel('Average number of rides')
-ax.set_title('Average number of rides per hour on weekends in 2019')
+ax.set_xlabel('Hour', fontsize=12)
+ax.set_ylabel('Average number of rides', fontsize=12)
+ax.set_title('Average number of rides per hour on weekends in 2019', fontsize=14)
 # ax.grid(linestyle=':')
 fig.tight_layout()
 plt.show()
