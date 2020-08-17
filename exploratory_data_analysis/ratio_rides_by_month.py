@@ -12,12 +12,14 @@ con = sqlite3.connect(data_dir / 'journey-data_2019-2020.db')
 query_wkday = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekDay_Rides
                     FROM Journeys
-                   WHERE strftime("%w", End_Date) NOT IN ("0", "6") AND strftime("%Y", End_Date) = "2019"
+                   WHERE strftime("%w", End_Date) NOT IN ("0", "6")
+                     AND strftime("%Y", End_Date) = "2019"
                 GROUP BY Month'''
 query_wkend = ''' SELECT strftime("%m", End_Date) AS Month, 
                          COUNT(Rental_Id) AS WeekEnd_Rides
                     FROM Journeys
                    WHERE strftime("%w", End_Date) IN ("0", "6")
+                     AND strftime("%Y", End_Date) = "2019"
                 GROUP BY Month'''
 query_results = [(con.execute(cur), con.execute(cur).fetchall()) for cur in [query_wkday, query_wkend]]
 results_df_list = [pd.DataFrame(result[1], columns=[x[0] for x in result[0].description]) for result in query_results]
