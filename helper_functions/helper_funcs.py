@@ -15,7 +15,7 @@ from bokeh.io import curdoc
 home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 avg_weekdays_sum_diff_df = pd.read_csv(data_dir /
-                                       'avg_weekday_sum_diff_2019_station_name_merc_coord.csv',
+                                       'avg_weekday_sum_diff_station_name_merc_coord_2019_v2.csv',
                                        index_col='Date')
 
 
@@ -27,7 +27,7 @@ def station_chunk(it, size):
 
 
 # scale factor for data points in units of hundreds
-scale_factor = 1e0 # 1e2
+scale_factor = 1e0
 
 
 # return a list of dictionaries, each one of which has time as key and
@@ -37,8 +37,8 @@ def bike_flux(flux_df):
     for row in flux_df.itertuples():
         station_name, lat, long, sum_flux, diff_flux = list(
             map(tuple, zip(*station_chunk(row[1:], 5))))
-        sum_flux = np.array(sum_flux)/scale_factor
-        diff_flux = np.array(diff_flux)/scale_factor
+        sum_flux = np.array(sum_flux)*scale_factor
+        diff_flux = np.array(diff_flux)*scale_factor
         bike_flux_list.append(
             {row[0]: {'sum_flux': sum_flux, 'diff_flux': diff_flux,
                       'lat': lat, 'long': long,
@@ -103,19 +103,19 @@ def animate():
 # drop down hour selector
 hour_interval_selector = Select(title='Hour interval',
                                 options=list(time_interval_dict.keys()),
-                                value='00:00:00')
+                                value='00:00')
 hour_interval_selector.on_change('value', lambda attr, old, new: update())
 
 # minimum traffic flux slider
 flux_slider = Slider(start=0,
-                     end=100,
+                     end=30,
                      value=0,
                      step=1,
                      width=1,
                      align='start',
                      title='Lower limit of total traffic flux')
  # allows scaling before update
-flux_slider.value = flux_slider.value/scale_factor
+flux_slider.value = flux_slider.value*scale_factor
 flux_slider.on_change('value', lambda attr, old, new: update())
 
 # hourly drop down and minimum flux selector

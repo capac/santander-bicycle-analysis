@@ -54,8 +54,8 @@ plot.add_tools(HoverTool(tooltips=tooltips))
 
 # color bar
 color_mapper = LinearColorMapper(palette='Turbo256',
-                                 low=-1e2,
-                                 high=1e2)
+                                 low=-3e1,
+                                 high=3e1)
 
 color_bar = ColorBar(color_mapper=color_mapper,
                      label_standoff=12,

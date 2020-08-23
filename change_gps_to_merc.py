@@ -10,7 +10,7 @@ from coordinate_transformation.to_web_merc import toWebMerc
 home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 avg_weekdays_sum_diff_df = pd.read_csv(
-    data_dir / 'avg_weekday_sum_diff_2019_station_name.csv', index_col='Date')
+    data_dir / 'avg_weekend_sum_diff_station_name_2019_v2.csv', index_col='Date')
 
 # list of tuple station IDs and index of station IDs
 tuple_station_id_index_list = [(i, re.search(r'(?<=Latitude_)\d{1,3}', item).group(
@@ -30,4 +30,4 @@ for station_id_index, station_id in tuple_station_id_index_list:
 
 # save to CSV
 avg_weekdays_sum_diff_df.to_csv(
-    data_dir / 'avg_weekday_sum_diff_2019_station_name_merc_coord.csv')
+    data_dir / 'avg_weekend_sum_diff_station_name_merc_coord_2019_v2.csv')
