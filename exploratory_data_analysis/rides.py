@@ -1,5 +1,6 @@
 # /usr/bin/env python3
 
+from matplotlib.pyplot import minorticks_off
 import pandas as pd
 import numpy as np
 import os
@@ -15,9 +16,9 @@ home = os.environ['HOME']
 data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 
 # connect to SQLite DB on laptop
-flow_journey_db = data_dir / 'FlowJourneyData.db'
+flow_journey_db = data_dir / 'journey-data_2019-2020.db'
 con = sqlite3.connect(flow_journey_db)
-query = '''SELECT * FROM RidesDay'''
+query = '''SELECT * FROM rides_count'''
 cursor = con.execute(query)
 journey_results = cursor.fetchall()
 bike_df = pd.DataFrame(journey_results, columns=[
@@ -25,17 +26,17 @@ bike_df = pd.DataFrame(journey_results, columns=[
 
 # date index
 dates = pd.date_range(
-    start=bike_df['Day'].iloc[0], end=bike_df['Day'].iloc[-1], freq='1D')
+    start=bike_df['Date'].iloc[0], end=bike_df['Date'].iloc[-1], freq='1D')
 
 # convert to datetime and filter on date index
-bike_df['Day'] = pd.to_datetime(bike_df['Day'], format=r'%Y-%m-%d')
-filter_ = bike_df['Day'].isin(dates)
+bike_df['Date'] = pd.to_datetime(bike_df['Date'], format=r'%Y-%m-%d')
+filter_ = bike_df['Date'].isin(dates)
 
 # scatter plot
-days = bike_df['Day'].loc[filter_]
-rides = bike_df['Sum_Journeys'].loc[filter_]
+days = bike_df['Date'].loc[filter_]
+rides = bike_df['Num_Rides'].loc[filter_]
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.scatter(days, rides/1e4, alpha=0.6, marker='o',
+axes.scatter(days, rides/1e4, alpha=0.6, marker='o', s=40,
              color='dodgerblue', edgecolor='k')
 
 yaxis_limits = axes.yaxis.get_data_interval()
@@ -67,6 +68,7 @@ axes.set_ylim(yaxis_limits[0], yaxis_limits[1])
 
 # rotates and right aligns the x labels, and moves the bottom of the
 # axes up to make room for them
+axes.set_xticks([], minor=True)
 fig.autofmt_xdate()
 
 # set axes labels
@@ -74,7 +76,7 @@ axes.set_xlabel('Dates', fontsize=12)
 axes.set_ylabel('Rides per day (in units of 10,000)', fontsize=12)
 axes.set_title(
     f'Total number of rides per day from {days.min():%Y-%m-%d} to {days.max():%Y-%m-%d}', fontsize=14)
-fig.tight_layout()
+# fig.tight_layout()
 # axes.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 plt.show()
