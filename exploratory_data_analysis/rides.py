@@ -36,7 +36,7 @@ filter_ = bike_df['Date'].isin(dates)
 days = bike_df['Date'].loc[filter_]
 rides = bike_df['Num_Rides'].loc[filter_]
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.scatter(days, rides/1e4, alpha=0.6, marker='o', s=40,
+axes.scatter(days, rides/1e4, alpha=0.6, marker='o', s=60,
              color='dodgerblue', edgecolor='k')
 
 yaxis_limits = axes.yaxis.get_data_interval()
@@ -76,7 +76,7 @@ axes.set_xlabel('Dates', fontsize=12)
 axes.set_ylabel('Rides per day (in units of 10,000)', fontsize=12)
 axes.set_title(
     f'Total number of rides per day from {days.min():%Y-%m-%d} to {days.max():%Y-%m-%d}', fontsize=14)
-# fig.tight_layout()
+fig.tight_layout()
 # axes.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 plt.show()
