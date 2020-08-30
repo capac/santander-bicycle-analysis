@@ -1,7 +1,7 @@
 # /usr/bin/env python3
 
 import pandas as pd
-import numpy as np
+from datetime import timedelta
 from pathlib import Path
 import os
 import sqlite3
@@ -15,19 +15,20 @@ data_dir = Path(home) / 'Programming/data/s2ds-project-data'
 # connect to SQLite DB on laptop
 flow_journey_db = data_dir / 'journey-data_2019-2020.db'
 con = sqlite3.connect(flow_journey_db)
-query = '''SELECT Day, 
-                  Bike_Id, 
-                  ROUND(AVG(Num_Rides), 2) AS Average 
-             FROM (SELECT strftime("%Y-%m-%d", End_Date) AS Day, 
+query = '''SELECT Bike_Id, 
+                  ROUND(AVG(Num_Rides), 2) AS Avg_Num_Rides 
+             FROM (SELECT strftime("%Y-%m-%d", End_Date) AS Date, 
                           Bike_Id, 
                           COUNT(Rental_Id) AS Num_Rides, 
-                          SUM(Duration) AS Tot_Time_Rides 
+                          AVG(Duration) AS Avg_Time_Rides 
                      FROM Journeys 
-                    WHERE strftime("%w", End_Date) NOT IN ("0", "6") 
-                 GROUP BY Day, 
+                    WHERE strftime("%w", End_Date) NOT IN ("0", "6")
+                      AND strftime("%Y", End_Date) = "2019"
+                      AND julianday(End_Date) - julianday(Start_Date) < 1
+                 GROUP BY Date, 
                           Bike_Id 
-                   HAVING Tot_Time_Rides > 0) 
-                 GROUP BY Bike_Id'''
+                   HAVING Avg_Time_Rides > 0)
+         GROUP BY Bike_Id'''
 
 cursor = con.execute(query)
 journey_results = cursor.fetchall()
@@ -38,13 +39,13 @@ bike_df = pd.DataFrame(journey_results, columns=[
 
 # histogram
 fig, axes = plt.subplots(figsize=(8, 6))
-axes.hist(bike_df['Average'], 60, range=[2, 6], edgecolor='k', color='dodgerblue')
-avg_num_ride = bike_df['Average'].median()
-axes.vlines(avg_num_ride, axes.yaxis.get_data_interval()[
-            0], axes.yaxis.get_data_interval()[1], linestyles=':', label=f'Median: {avg_num_ride:.1f}')
+axes.hist(bike_df['Avg_Num_Rides'], 60, range=[2, 6], edgecolor='k', color='dodgerblue')
+avg_num_rides = round(bike_df['Avg_Num_Rides'].mean())
+axes.vlines(avg_num_rides, axes.yaxis.get_data_interval()[0], axes.yaxis.get_data_interval()[
+            1], linestyles='--', color='k', label=f'''Average: {avg_num_rides}''')
 axes.set_xlabel('Average number of rides per bike on weekdays')
 axes.set_ylabel('Counts')
-axes.set_title('Histogram of average number of rides per bike on weekdays')
+axes.set_title('Histogram of average number of rides per bike on weekdays in 2019')
 # plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 plt.legend(loc='best')
