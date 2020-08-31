@@ -48,7 +48,7 @@ axes.vlines(avg_minutes, axes.yaxis.get_data_interval()[0], axes.yaxis.get_data_
             1], linestyles='--', color='k', label=f'''Average: {formatted_avg_ride}''')
 axes.set_xlabel('Average bike ride duration per weekday (minutes)')
 axes.set_ylabel('Counts')
-axes.set_title('Histogram of average bike ride duration per weekday in 2019')
+axes.set_title('Histogram of average bike ride durations on weekdays in 2019')
 # plt.grid(linestyle=':')
 print(f'Time elapsed: {time() - t0:.2f} seconds')
 fig.tight_layout()
