@@ -13,6 +13,18 @@ The exploratory data analysis folder contains plots for:
 
 <center>
 
+![](https://github.com/capac/santander-bicycle-analysis/raw/master/exploratory_data_analysis/plots/hist_avg_ride_durations_weekdays_2019.png "Histogram of average bike ride durations on weekdays in 2019")
+
+</center>
+
+<center>
+
+![](https://github.com/capac/santander-bicycle-analysis/raw/master/exploratory_data_analysis/plots/hist_avg_ride_durations_weekends_2019.png "Histogram of average bike ride durations on weekends in 2019")
+
+</center>
+
+<center>
+
 ![](https://github.com/capac/santander-bicycle-analysis/raw/master/exploratory_data_analysis/plots/tot_rides_by_month_2019.png "Total number of rides per month in 2019")
 
 </center>
