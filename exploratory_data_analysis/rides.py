@@ -1,6 +1,5 @@
 # /usr/bin/env python3
 
-from matplotlib.pyplot import minorticks_off
 import pandas as pd
 import numpy as np
 import os
@@ -43,11 +42,13 @@ yaxis_limits = axes.yaxis.get_data_interval()
 yaxis_limits = [yaxis_limits[0]-0.25, yaxis_limits[1]+0.25]
 
 # London tube strikes, in tuples with years, months and days
-# complete_london_tube_strike_list = [(2012, 12, 26), (2014, 2, 4), (2014, 2, 5), (2014, 2, 6), (2014, 4, 28), (2014, 4, 29), (2014, 4, 30), (2014, 8, 22), (2014, 8, 23), (2014, 12, 1), (2015, 7, 8), (2015, 7, 9), (2015, 8, 5), (2015, 8, 6)]
+# complete_london_tube_strike_list = [(2012, 12, 26), (2014, 2, 4), (2014, 2, 5), (2014, 2, 6), (2014, 4, 28),
+# (2014, 4, 29), (2014, 4, 30), (2014, 8, 22), (2014, 8, 23), (2014, 12, 1), (2015, 7, 8), (2015, 7, 9), (2015, 8, 5),
+# (2015, 8, 6)]
 for dt, lb, sp in zip([(2019, 6, 10), (2019, 12, 25)], ['Rainy day', 'Christmas'], [1.15, 3.2]):
     axes.vlines(datetime(*dt), yaxis_limits[0], yaxis_limits[1], linestyle=':', color='k')
     axes.annotate(lb, xy=(datetime(*dt)-timedelta(7.5), axes.yaxis.get_data_interval()
-                                     [0] + sp), ha='left', va='bottom', rotation=90, size=9, color='k')
+                          [0] + sp), ha='left', va='bottom', rotation=90, size=9, color='k')
 # print(axes.yaxis.__dir__())
 
 # format the ticks
